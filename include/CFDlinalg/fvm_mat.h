@@ -1,6 +1,7 @@
 #ifndef FVM_MAT_H
 #define FVM_MAT_H
 
+#include "fvm.h"
 
 /* --- Creator, destroyer, checkers, basic utilities --- */
 
@@ -21,6 +22,50 @@
     *    @note data is initialized with 0.0 in a format of double
     */
 fvm_mat *fvm_mat_creator(unsigned int num_rows, unsigned int num_cols);
+
+/**
+ * @brief Create a matrix and initialize its contents from a flat array.
+ *
+ * Allocates a new fvm_mat object and a contiguous data buffer sized
+ * num_rows * num_cols doubles, then copies the values from the caller-supplied
+ * array arr into the newly allocated matrix storage.
+ *
+ * The input array arr is interpreted in row-major order: element at row r,
+ * column c is arr[r * num_cols + c]. The created matrix owns its storage and
+ * must be released with fvm_mat_destroyer().
+ *
+ * Parameters
+ * ----------
+ * @param arr        Pointer to a contiguous array of double values to copy
+ *                   from. This function does not modify arr.
+ * @param num_rows   Number of rows of the matrix to create (must be > 0).
+ * @param num_cols   Number of columns of the matrix to create (must be > 0).
+ *
+ * Returns
+ * -------
+ * @return fvm_mat * On success, a pointer to a newly allocated fvm_mat whose
+ *                   ->data contains a copy of the contents of arr.
+ * @return NULL      On error: if arr is NULL, if num_rows or num_cols is zero,
+ *                   or if memory allocation fails. In case of error, no memory
+ *                   is leaked and a diagnostic is reported via CFD_ERROR.
+ *
+ * Ownership & lifetime
+ * --------------------
+ * - The returned fvm_mat owns the memory in its ->data field and must be
+ *   freed with fvm_mat_destroyer() when no longer needed.
+ * - The caller retains ownership of arr; this function only reads from it and
+ *   does not store the pointer.
+ *
+ * Notes & requirements
+ * --------------------
+ * - arr must point to at least num_rows * num_cols consecutive doubles.
+ * - The function assumes row-major layout for both arr and the internal
+ *   fvm_mat->data layout.
+ * - The function is safe to call in test code to create matrices from static
+ *   initializer arrays, e.g. `double A[] = { ... }; fvm_mat *m = fvm_mat_decl(A, r, c);
+ */
+fvm_mat *fvm_mat_decl(const double *arr, unsigned int num_rows, unsigned int num_cols);
+
 /**
  * @brief Frees a matrix object and its internal data buffer.
  *

@@ -18,6 +18,7 @@ Such functions are under construction as of right now and it is advised not to u
 
 /* --- Creator, destroyer, checkers, basic utilities --- */
 fvm_mat *fvm_mat_creator(unsigned int num_rows, unsigned int num_cols);
+fvm_mat *fvm_mat_decl(const double *arr, unsigned int num_rows, unsigned int num_cols);
 void fvm_mat_destroyer(fvm_mat *m);
 int fvm_mat_nonzero_count(fvm_mat *m, double tol);
 fvm_mat *fvm_mat_rand(unsigned int num_rows, unsigned int num_cols, double min, double max);
@@ -97,6 +98,20 @@ fvm_mat *fvm_mat_creator(unsigned int num_rows, unsigned int num_cols)
         return NULL;
     }
 
+    return m;
+}
+
+fvm_mat *fvm_mat_decl(const double *arr, unsigned int num_rows, unsigned int num_cols)
+{
+    fvm_mat* m = fvm_mat_creator(num_rows, num_cols);
+    NULL_CHECK_PTR(m);
+
+    size_t size = (size_t)num_rows * (size_t)num_cols;
+
+    for (size_t i = 0; i < size; i++)
+    {
+        m->data[i] = arr[i];
+    }
     return m;
 }
 

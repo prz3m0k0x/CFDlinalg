@@ -1,6 +1,7 @@
 #ifndef FVM_VEC_H
 #define FVM_VEC_H
 
+#include "fvm.h"
 
 /* --- Utility functions --- */
 /**
@@ -16,6 +17,7 @@
  */
 fvm_vector *fvm_vec_creator(unsigned int num_dim);
 
+fvm_vector *fvm_vec_decl(const double *arr, unsigned int num_dim);
 /**
  * @brief Frees a vector and its internal data buffer.
  *

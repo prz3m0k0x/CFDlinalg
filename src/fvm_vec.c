@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -64,6 +65,24 @@ void fvm_vec_copy_contents(fvm_vector *copy_to, fvm_vector *copy_from)
     }
 }
 
+fvm_vector *fvm_vec_decl(const double *arr, unsigned int num_dim)
+{
+    if (arr == NULL || num_dim == 0) {
+        CFD_ERROR(CFD_INVALID_DIMENSIONS);
+        return NULL;
+    }
+
+    fvm_vector *vec = fvm_vec_creator(num_dim);
+    if (vec == NULL) {
+        return NULL;
+    }
+
+    for (unsigned int i = 0; i < num_dim; ++i) {
+        vec->data[i] = arr[i];
+    }
+
+    return vec;
+}
 
 /*Mathematical operations*/
 

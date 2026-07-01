@@ -2,6 +2,8 @@
 #define FVM_VEC_H
 
 #include "fvm.h"
+#include "fvm_mat.h"
+
 
 /* --- Utility functions --- */
 /**

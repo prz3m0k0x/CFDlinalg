@@ -2,6 +2,7 @@
 #define FVM_MAT_H
 
 #include "fvm.h"
+#include "fvm_vec.h"
 
 /* --- Creator, destroyer, checkers, basic utilities --- */
 

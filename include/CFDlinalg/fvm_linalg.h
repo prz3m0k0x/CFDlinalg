@@ -4,6 +4,10 @@
 #include "fvm.h"
 #include "fvm_vec.h"
 #include "fvm_mat.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
 
 #define fvm_linalg_solve(...) \
     fvm_linalg_solve_argv((fvm_linalg_solve_args){ \
@@ -38,7 +42,7 @@ int fvm_linalg_solve_argv(fvm_linalg_solve_args args);
 int fvm_linalg_solve_b(fvm_linalg_system* system, int n_iter, double tol, const char *solver);
 
 /* --- Mathematical operations ---*/
-double max_scaled_residual(fvm_vector* res);
+double residual_inf_norm(fvm_vector* res);
 fvm_vector* fvm_mat_vec_prod(fvm_mat* m, fvm_vector* v);
 int fvm_linalg_gauss_u(fvm_mat* m);
 

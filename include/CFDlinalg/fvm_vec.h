@@ -4,7 +4,6 @@
 #include "fvm.h"
 #include "fvm_mat.h"
 
-
 /* --- Utility functions --- */
 /**
  * @brief Creates an empty vector of given dimension.

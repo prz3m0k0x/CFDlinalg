@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "fvm.h"
+#include "../include/CFDlinalg/fvm.h"
 #include <omp.h>
 #include <math.h>
 #include <limits.h>
-
+#include <time.h>
 /*
 Functions suffixed with _r return the augmented object, e.g. original matrix mutliplied by scalar,
 while functions without such suffix create a copy of an object. Care is advised when using creator
@@ -155,10 +155,20 @@ fvm_mat *fvm_mat_rand(unsigned int num_rows, unsigned int num_cols, double min, 
 
     srand((unsigned int)time(NULL));
     for (size_t i = 0; i < (size_t)num_cols * num_rows; i++) {
-        r->data[i] = fvm_rand_intvl(min, max);
+        r->data[i] = fvm_rand_intrvl(min, max);
     }
 
     return r;
+
+}
+fvm_mat *fvm_mat_square(unsigned int num)
+{
+    if (num == 0) {
+        CFD_ERROR(CFD_INVALID_DIMENSIONS);
+        return NULL;
+    }
+
+    return fvm_mat_creator(num, num);
 }
 
 fvm_mat *fvm_mat_square_rand(unsigned int num, double min, double max)
@@ -173,7 +183,7 @@ fvm_mat *fvm_mat_square_rand(unsigned int num, double min, double max)
 
     size_t total = (size_t)num * (size_t)num;
     for (size_t i = 0; i < total; i++) {
-        sqrand->data[i] = fvm_rand_intvl(min, max);
+        sqrand->data[i] = fvm_rand_intrvl(min, max);
     }
 
     return sqrand;

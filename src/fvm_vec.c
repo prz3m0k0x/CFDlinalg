@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include "fvm.h"
+#include <time.h>
+#include "../include/CFDlinalg/fvm.h"
+#include "../include/CFDlinalg/fvm_mat.h"
 
 /*Utilities functions*/
 
@@ -27,6 +29,7 @@ fvm_vector *fvm_vec_creator(unsigned int num_dim)
         CFD_ERROR(CFD_ALLOCATION_FAILED);
     return NULL;
     }
+    return vec;
 }
 
 void fvm_vec_destroyer(fvm_vector *vec)

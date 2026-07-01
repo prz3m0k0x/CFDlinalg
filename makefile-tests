@@ -1,0 +1,56 @@
+CC      = gcc
+CFLAGS  = -Wall -Wextra -g -Iinclude
+LDFLAGS = -lcunit -lm
+
+SRC_DIR      = src
+OBJ_DIR      = build
+TEST_SRC_DIR = test
+TEST_OBJ_DIR = build/test
+TEST_BIN_DIR = bin/test
+
+COMMON_OBJ = \
+	$(OBJ_DIR)/fvm_vec.o \
+	$(OBJ_DIR)/fvm_mat.o \
+	$(OBJ_DIR)/fvm_linalg.o
+
+VEC_TEST_OBJ    = $(TEST_OBJ_DIR)/fvm_test_vec.o
+MAT_TEST_OBJ    = $(TEST_OBJ_DIR)/fvm_test_mat.o
+LINALG_TEST_OBJ = $(TEST_OBJ_DIR)/fvm_test_linalg.o
+ERROR_TEST_OBJ = $(TEST_OBJ_DIR)/fvm_test_error.o
+
+VEC_BIN    = $(TEST_BIN_DIR)/test_vec
+MAT_BIN    = $(TEST_BIN_DIR)/test_mat
+LINALG_BIN = $(TEST_BIN_DIR)/test_linalg
+ERROR_BIN = $(TEST_BIN_DIR)/test_error
+
+all: $(VEC_BIN) $(MAT_BIN) $(LINALG_BIN) $(ERROR_BIN)
+
+$(VEC_BIN): $(COMMON_OBJ) $(VEC_TEST_OBJ)
+	mkdir -p $(TEST_BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(MAT_BIN): $(COMMON_OBJ) $(MAT_TEST_OBJ)
+	mkdir -p $(TEST_BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(LINALG_BIN): $(COMMON_OBJ) $(LINALG_TEST_OBJ)
+	mkdir -p $(TEST_BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(ERROR_BIN): $(COMMON_OBJ) $(ERROR_TEST_OBJ)
+	mkdir -p $(TEST_BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TEST_OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.c
+	mkdir -p $(TEST_OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJ_DIR)/*.o $(TEST_OBJ_DIR)/*.o
+	rm -f $(VEC_BIN) $(MAT_BIN) $(LINALG_BIN) &(ERROR_BIN)
+
+.PHONY: all clean
